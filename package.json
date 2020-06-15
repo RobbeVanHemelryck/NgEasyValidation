@@ -1,0 +1,30 @@
+{
+  "name": "ng-easy-validation",
+  "version": "1.0.3",
+  "peerDependencies": {
+    "@angular/animations": "~9.1.11",
+    "@angular/common": "~9.1.11",
+    "@angular/compiler": "~9.1.11",
+    "@angular/core": "~9.1.11",
+    "@angular/forms": "~9.1.11",
+    "@angular/platform-browser": "~9.1.11",
+    "@angular/platform-browser-dynamic": "~9.1.11",
+    "@angular/router": "~9.1.11",
+    "core-js": "^2.5.4",
+    "rxjs": "~6.5.5",
+    "tippy.js": "^6.2.3",
+    "tslib": "^1.10.0",
+    "zone.js": "~0.10.2"
+  },
+  "description": "A library to easily configure simple and complex validation, complete with layout and automatically added tooltips",
+  "author": "Robbe Van Hemelryck",
+  "keywords": ["angular", "validation", "simple", "complex", "formgroup", "directive"],
+  "homepage": "https://github.com/RobbeVanHemelryck/NgEasyValidation#readme",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/RobbeVanHemelryck/NgEasyValidation.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RobbeVanHemelryck/NgEasyValidation/issues"
+  }
+}
