@@ -19,7 +19,7 @@ import { NgEasyValidationModule } from 'ng-easy-validation';
 ```
 
 ## Basic usage
-#### 1. Prepare form
+### 1. Prepare form
 To begin, add a reference to FormGroup on the form.
 ```<form #form="ngForm">```
 
@@ -28,7 +28,7 @@ Then add the ngEasyValidation directive, together with the requirements (more on
 <form #form="ngForm" [ngEasyValidation]="requirements">
 ```
 
-#### 2. Prepare input fields
+### 2. Prepare input fields
 
 Since this library wraps Angular's template-driven form, every input field needs to have an ```[(ngModel)]``` assigned to it, as well as a unique ```name```.
 
@@ -37,7 +37,7 @@ Since this library wraps Angular's template-driven form, every input field needs
 ```
 
 
-#### 3. Create a requirements object
+### 3. Create a requirements object
 
 The requirements must be an object with keys that refer to the ```name``` property, and values that contain a list the validators for that field.
 
@@ -51,18 +51,18 @@ requirements: any = {
     }
 ```
 
-#### Properties of validation object
+### Properties of validation object
 
-##### validator
+#### validator
 
 This is the object that will be executed to help determine if a field is valid or not. 
 This library supports all of Angular's built-in validators, plus many custom ones you can use in your application.
 
-##### message (optional)
+#### message (optional)
 
 The error message that will be shown in the tooltip. When left empty, an appropriate message will be generated.
 
-##### tooltipsOnInit (optional)
+#### tooltipsOnInit (optional)
 
 A boolean that tells to library to show tooltips immediately after the form has been loaded into the page. Default value is ```false```.
 
@@ -110,3 +110,7 @@ validator     | Invalid when|Notes
  `isNumeric()` | value is not a numeric
  `isAlphaNumeric()` | value is not alphanumerical
  `isAlphabetical()` | value is not alphabetical
+
+ ## License
+
+ MIT

@@ -10,13 +10,10 @@
     "@angular/platform-browser": "~9.1.11",
     "@angular/platform-browser-dynamic": "~9.1.11",
     "@angular/router": "~9.1.11",
-    "core-js": "^2.5.4",
     "rxjs": "~6.5.5",
-    "tippy.js": "^6.2.3",
-    "tslib": "^1.10.0",
-    "zone.js": "~0.10.2"
+    "tippy.js": "^6.2.3"
   },
-  "description": "A library to easily configure simple and complex validation, complete with layout and automatically added tooltips",
+  "description": "Automatically add Tippy.js tooltips to invalid input fields, using Angular's template-driven form validation.",
   "author": "Robbe Van Hemelryck",
   "keywords": ["angular", "validation", "simple", "complex", "formgroup", "directive"],
   "homepage": "https://github.com/RobbeVanHemelryck/NgEasyValidation#readme",
