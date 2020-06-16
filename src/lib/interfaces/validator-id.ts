@@ -17,5 +17,8 @@ export enum ValidatorId {
     SqlObjectName = 'sqlObjectName',
     IsInteger = 'isInteger',
     IsNumeric = 'isNumeric',
-    isAlphaNumeric = 'isAlphaNumeric'
+    isAlphaNumeric = 'isAlphaNumeric',
+    isAlphabetical = 'isAlphabetical',
+    startsWith = 'startsWith',
+    endsWith = 'endsWith'
 }

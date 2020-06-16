@@ -86,7 +86,16 @@ export class NgEasyValidationService {
                 errorMessage = `${field} must be a numeric`;
                 break; 
             case ValidatorId.isAlphaNumeric:
-                errorMessage = `${field} must be a alpha numerical`;
+                errorMessage = `${field} must be alpha numerical`;
+                break; 
+            case ValidatorId.isAlphabetical:
+                errorMessage = `${field} can only contain letters`;
+                break; 
+            case ValidatorId.startsWith:
+                errorMessage = `${field} must start with '${requirementDetails.startsWith}'`;
+                break; 
+            case ValidatorId.endsWith:
+                errorMessage = `${field} must end with '${requirementDetails.endsWith}'`;
                 break; 
             default:
                 errorMessage = `${field} is invalid`;

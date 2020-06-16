@@ -5,6 +5,10 @@ Automatically add [Tippy.js](https://atomiks.github.io/tippyjs/v6/getting-starte
 It uses the validation logic from Angular's template-driven forms, and wraps it in a directive that adds tooltips to the respective input fields.
 
 
+## Demo
+
+[Check out the demo](https://stackblitz.com/edit/ng-easy-validation)
+
 ## Installation
 Install it via NPM
 

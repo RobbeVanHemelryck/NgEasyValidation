@@ -45,20 +45,6 @@ export function maxLength(maxLength: number): ValidatorIdMap {
     }
 }
 
-// export function compose(validators: null): ValidatorIdMap {
-//     return {
-//         validator: Validators.compose(validators),
-//         id: ValidatorId.Compose
-//     }
-// }
-
-// export function composeAsync(validators: AsyncValidatorFn[]): ValidatorIdMap {
-//     return {
-//         validator: Validators.composeAsync(validators),
-//         id: ValidatorId.ComposeAsync
-//     }
-// }
-
 export function email(): ValidatorIdMap {
     return {
         validator: Validators.email,
@@ -200,5 +186,47 @@ export function isAlphaNumeric(): ValidatorIdMap {
     return {
         validator: res,
         id: ValidatorId.isAlphaNumeric
+    }
+}
+
+export function isAlphabetical(): ValidatorIdMap {
+    const res = (control: AbstractControl): {[key: string]: any} | null => {
+        let value = control.value || "";
+        var code, i, len;
+
+        for (i = 0, len = value.length; i < len; i++) {
+            code = value.charCodeAt(i);
+            if (!(code > 64 && code < 91) && // upper alpha (A-Z)
+                !(code > 96 && code < 123)) { // lower alpha (a-z)
+            return {'isAlphabetical': {value: value}};
+            }
+        }
+        return null;
+    };
+    return {
+        validator: res,
+        id: ValidatorId.isAlphabetical
+    }
+}
+
+export function startsWith(str: string): ValidatorIdMap {
+    const res = (control: AbstractControl): {[key: string]: any} | null => {
+        let value = control.value || "";
+        return !value || value.startsWith(str)? null : {"startsWith": {value: value, startsWith: str}};
+    };
+    return {
+        validator: res,
+        id: ValidatorId.startsWith
+    }
+}
+
+export function endsWith(str: string): ValidatorIdMap {
+    const res = (control: AbstractControl): {[key: string]: any} | null => {
+        let value = control.value || "";
+        return !value || value.endsWith(str)? null : {"endsWith": {value: value, endsWith: str}};
+    };
+    return {
+        validator: res,
+        id: ValidatorId.endsWith
     }
 }
