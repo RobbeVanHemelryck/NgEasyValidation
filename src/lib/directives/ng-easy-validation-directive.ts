@@ -15,30 +15,26 @@ export class NgEasyValidationDirective implements OnInit, OnChanges  {
 
     @Input("ngEasyValidation")
     set ngEasyValidation(requirements: {[key: string]: any[]}){
+        let newRequirements = {};
         for(let field in requirements){
             let configs: ValidatorConfig[] = [];
 
             //Convert passed configurations to ValidatorConfig if they are not already
             for(let config of requirements[field]){
-                if(config instanceof ValidatorConfig) configs.push(config);
-                else{
-                    configs.push(new ValidatorConfig(
-                        config.id,
-                        config.validator,
-                        config.message,
-                        config.applyValidationOnInit || false
-                    ))
-                }
+                configs.push(new ValidatorConfig(
+                    config.validator.id,
+                    config.validator.validator,
+                    config.message,
+                    config.tooltipsOnInit || false
+                ));
             }
-            requirements[field] = configs;
+            newRequirements[field] = configs;
         }
 
-        this.requirements = requirements;
+        this.requirements = newRequirements;
     }
 
-    @Input() useTooltips: boolean = true;
     @Input() tippyProps: Partial<DefaultProps> = {};
-    @Input() identifier: string = "";
     @Input() validationDebounceTime: number = 0;
 
     private invalidClass: string = "validation-error";
@@ -101,10 +97,11 @@ export class NgEasyValidationDirective implements OnInit, OnChanges  {
         for (let element of inputFields) {
             let field: string = element.getAttribute("name");
             let control: AbstractControl = this.host.form.controls[field];
+            let reqs = this.requirements[field];
             
-            let isDirty: boolean = this.setFieldIsDirty(this.requirements[field], control);
-            this.setFieldValidators(this.requirements[field], control);
-            this.setFieldTippy(field, element, isDirty);
+            let isDirty: boolean = this.setFieldIsDirty(reqs, control);
+            this.setFieldValidators(reqs, control);
+            this.setFieldTippy(reqs, field, element, isDirty);
 
             control.updateValueAndValidity();
         }
@@ -113,7 +110,7 @@ export class NgEasyValidationDirective implements OnInit, OnChanges  {
     
     private setFieldIsDirty(requirements: ValidatorConfig[], control: AbstractControl): boolean{
         let hasValue: boolean = control.value && control.value.length > 0;
-        let mustValidateOnInit: boolean = requirements && requirements.some(x => x.showErrorsOnInit);
+        let mustValidateOnInit: boolean = requirements && requirements.some(x => x.tooltipsOnInit);
         
         if(hasValue || mustValidateOnInit) control.markAsDirty();
         return hasValue || mustValidateOnInit;
@@ -127,12 +124,12 @@ export class NgEasyValidationDirective implements OnInit, OnChanges  {
         control.setValidators(reqsToAdd);
     }
 
-    private setFieldTippy(field: string, element: Element, isDirty: boolean){
+    private setFieldTippy(requirements: ValidatorConfig[], field: string, element: Element, isDirty: boolean){
         let instance = this.tippies[field];
         if(!instance){
             instance = tippy(element);
             this.tippies[field] = instance;
-            if(!isDirty) setTimeout(instance.disable, 10);
+            if(!isDirty && !requirements.some(x => x.tooltipsOnInit)) setTimeout(instance.disable, 10);
         }
     }
 
@@ -143,7 +140,7 @@ export class NgEasyValidationDirective implements OnInit, OnChanges  {
 
         let validationResult: ValidationResult[] = this.validationService.validate(this.requirements, this.host.form);
         let filteredInputFields: Element[] = this.getUsableInputFields(formEl);
-        if(this.useTooltips) this.updateFields(filteredInputFields, validationResult)
+        this.updateFields(filteredInputFields, validationResult)
     }
 
     private updateFields(inputFields: Element[], allErrors: ValidationResult[]){

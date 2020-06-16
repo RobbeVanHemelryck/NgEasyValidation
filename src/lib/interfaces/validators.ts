@@ -1,48 +1,83 @@
 import { ValidatorFn, AbstractControl, Validators, AsyncValidatorFn } from "@angular/forms";
+import { ValidatorIdMap } from './validator-id-map';
+import { ValidatorId } from './validator-id';
 
 //Wrapper methods around Angular's validators
-export function required(): ValidatorFn {
-    return Validators.required;
+export function required(): ValidatorIdMap{
+    return {
+        validator: Validators.required,
+        id: ValidatorId.Required
+    }
 }
 
-export function pattern(regex: string): ValidatorFn {
-    return Validators.pattern(regex);
+export function pattern(regex: string): ValidatorIdMap {
+    return {
+        validator: Validators.pattern(regex),
+        id: ValidatorId.Pattern
+    }
 }
 
-export function requiredTrue(): ValidatorFn {
-    return Validators.requiredTrue;
+export function requiredTrue(): ValidatorIdMap {
+    return {
+        validator: Validators.requiredTrue,
+        id: ValidatorId.RequiredTrue
+    }
 }
 
-export function nullValidator(): ValidatorFn {
-    return Validators.nullValidator;
+export function nullValidator(): ValidatorIdMap {
+    return {
+        validator: Validators.nullValidator,
+        id: ValidatorId.NullValidator
+    }
 }
 
-export function minLength(minLength: number): ValidatorFn {
-    return Validators.minLength(minLength);
+export function minLength(minLength: number): ValidatorIdMap {
+    return {
+        validator: Validators.minLength(minLength),
+        id: ValidatorId.MinLength
+    }
 }
 
-export function maxLength(maxLength: number): ValidatorFn {
-    return Validators.maxLength(maxLength);
+export function maxLength(maxLength: number): ValidatorIdMap {
+    return {
+        validator: Validators.maxLength(maxLength),
+        id: ValidatorId.MaxLength
+    }
 }
 
-export function compose(validators: null): ValidatorFn {
-    return Validators.compose(validators);
+// export function compose(validators: null): ValidatorIdMap {
+//     return {
+//         validator: Validators.compose(validators),
+//         id: ValidatorId.Compose
+//     }
+// }
+
+// export function composeAsync(validators: AsyncValidatorFn[]): ValidatorIdMap {
+//     return {
+//         validator: Validators.composeAsync(validators),
+//         id: ValidatorId.ComposeAsync
+//     }
+// }
+
+export function email(): ValidatorIdMap {
+    return {
+        validator: Validators.email,
+        id: ValidatorId.Email
+    }
 }
 
-export function composeAsync(validators: AsyncValidatorFn[]): ValidatorFn {
-    return Validators.composeAsync(validators);
+export function min(min: number): ValidatorIdMap {
+    return {
+        validator: Validators.min(min),
+        id: ValidatorId.Min
+    }
 }
 
-export function email(): ValidatorFn {
-    return Validators.email;
-}
-
-export function min(min: number): ValidatorFn {
-    return Validators.min(min);
-}
-
-export function max(max: number): ValidatorFn {
-    return Validators.max(max);
+export function max(max: number): ValidatorIdMap {
+    return {
+        validator: Validators.max(max),
+        id: ValidatorId.Max
+    }
 }
 
 
@@ -50,32 +85,41 @@ export function max(max: number): ValidatorFn {
 
 
 //Custom validators
-export function between(min: number, max: number): ValidatorFn {
+export function between(min: number, max: number): ValidatorIdMap {
     const res =(control: AbstractControl): {[key: string]: any} | null => {
         return control.value && (control.value > max || control.value < min)? {'between': {value: control.value, max: max, min: min}}: null;
     }; 
-    return res;
+    return {
+        validator: res,
+        id: ValidatorId.Between
+    }
 }
 
-export function invalidValues(invalidValues: any[] | any, valueModifier: (any) => any = x => x): ValidatorFn {
+export function invalidValues(invalidValues: any[] | any, valueModifier: (any) => any = x => x): ValidatorIdMap {
     const res = (control: AbstractControl): {[key: string]: any} | null => {
         let controlValue = valueModifier(control.value);
         if (!(invalidValues instanceof Array)) invalidValues = [invalidValues];
         return invalidValues.map(x => typeof x == "string"? x.toLowerCase() : x).includes(typeof controlValue == "string"? controlValue.toLowerCase() : controlValue)? {'invalidValues': {value: controlValue, invalidValues: invalidValues}}: null;
     };
-    return res;
+    return {
+        validator: res,
+        id: ValidatorId.InvalidValues
+    }
 }
 
-export function requiredValues(requiredValues: any[] | any, valueModifier: (any) => any = x => x): ValidatorFn {
+export function requiredValues(requiredValues: any[] | any, valueModifier: (any) => any = x => x): ValidatorIdMap {
     const res = (control: AbstractControl): {[key: string]: any} | null => {
         let controlValue = valueModifier(control.value);
         if (!(requiredValues instanceof Array)) requiredValues = [requiredValues];
         return !requiredValues.map(x => typeof x == "string"? x.toLowerCase() : x).includes(typeof controlValue == "string"? controlValue.toLowerCase() : controlValue)? {'requiredValues': {value: controlValue, requiredValues: requiredValues}}: null;
     };
-    return res;
+    return {
+        validator: res,
+        id: ValidatorId.RequiredValues
+    }
 }
 
-export function invalidCharacters(invalidCharacters: string): ValidatorFn {
+export function invalidCharacters(invalidCharacters: string): ValidatorIdMap {
     let regex = "^[^";
     for (let i = 0; i < invalidCharacters.length; i++) {
         const c = invalidCharacters[i];
@@ -86,50 +130,59 @@ export function invalidCharacters(invalidCharacters: string): ValidatorFn {
     const res = (control: AbstractControl): {[key: string]: any} | null => {
         return !(new RegExp(regex, "i")).test(control.value)? {'invalidCharacters': {value: control.value, invalidCharacters: invalidCharacters}}: null;
     };
-    return res;
+    return {
+        validator: res,
+        id: ValidatorId.InvalidCharacters
+    }
 }
 
-export function SQLObjectName(): ValidatorFn {
+export function sqlObjectName(): ValidatorIdMap {
     const res = (control: AbstractControl): {[key: string]: any} | null => {
         return (control.value && !(new RegExp("^[_a-zA-Zß#][0-9a-zA-Zß_@$#]*$", "i")).test(control.value))? {'sqlObjectName': {value: control.value}}: null;
     };
-    return res;
+    return {
+        validator: res,
+        id: ValidatorId.SqlObjectName
+    }
 }
 
-export function conditionalValidator(validators: ValidatorFn | ValidatorFn[], condition: (AbstractControl) => boolean): ValidatorFn {
+export function conditionalValidator(validator: ValidatorIdMap, condition: (AbstractControl) => boolean): ValidatorIdMap {
     const res = (control) => {
         if (!condition(control)) {
             return null;
         }
 
-        if (!Array.isArray(validators)) {
-            return validators(control);
-        }
-
-        return validators.map(v => v(control)).reduce((errors, result) =>
-            result === null ? errors : (Object.assign(errors || {}, result))
-        );
+        return validator.validator(control);
     };
-    return res;
+    return {
+        validator: res,
+        id: validator.id
+    }
 }
 
-export function isInteger(): ValidatorFn {
+export function isInteger(): ValidatorIdMap {
     const res = (control: AbstractControl): {[key: string]: any} | null => {
         let value = control.value || "";
         return !(new RegExp("^[0-9]*$", "i")).test(value)? {'isInteger': {value: value}}: null;
     };
-    return res;
+    return {
+        validator: res,
+        id: ValidatorId.IsInteger
+    }
 }
 
-export function isNumeric(): ValidatorFn {
+export function isNumeric(): ValidatorIdMap {
     const res = (control: AbstractControl): {[key: string]: any} | null => {
         let value = control.value || "";
         return !(new RegExp("^[0-9]*[.,]?[0-9]*$", "i")).test(value)? {'isNumeric': {value: value}}: null;
     };
-    return res;
+    return {
+        validator: res,
+        id: ValidatorId.IsNumeric
+    }
 }
 
-export function isAlphaNumeric(): ValidatorFn {
+export function isAlphaNumeric(): ValidatorIdMap {
     const res = (control: AbstractControl): {[key: string]: any} | null => {
         let value = control.value || "";
         var code, i, len;
@@ -144,5 +197,8 @@ export function isAlphaNumeric(): ValidatorFn {
         }
         return null;
     };
-    return res;
+    return {
+        validator: res,
+        id: ValidatorId.isAlphaNumeric
+    }
 }

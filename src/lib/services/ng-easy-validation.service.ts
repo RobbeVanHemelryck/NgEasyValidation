@@ -18,7 +18,7 @@ export class NgEasyValidationService {
             for(let errorIdentifier in control.errors){
                 const config: ValidatorConfig = JSON.parse(JSON.stringify(requirements[field].find(x => x.identifier == errorIdentifier)));
                 this.setErrorMessage(field, control, config);
-                result.push(new ValidationResult(field, config, !control.dirty && !config.showErrorsOnInit));
+                result.push(new ValidationResult(field, config, !control.dirty && !config.tooltipsOnInit));
             }
         };
 

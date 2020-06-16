@@ -5,12 +5,12 @@ export class ValidatorConfig {
     identifier: ValidatorId | string;
     validator: ValidatorFn;
     message: string = "";
-    showErrorsOnInit: boolean = false;
+    tooltipsOnInit: boolean = false;
 
-    constructor(identifier: ValidatorId | string, validator: ValidatorFn, message: string = "", showErrorsOnInit: boolean = false) {
+    constructor(identifier: ValidatorId | string, validator: ValidatorFn, message: string = "", tooltipsOnInit: boolean = false) {
         this.validator = validator;
         this.identifier = identifier;
         this.message = message,
-        this.showErrorsOnInit = showErrorsOnInit;
+        this.tooltipsOnInit = tooltipsOnInit;
     }
 }

@@ -26,5 +26,6 @@
   },
   "bugs": {
     "url": "https://github.com/RobbeVanHemelryck/NgEasyValidation/issues"
-  }
+  },
+  "license" : "MIT"
 }
