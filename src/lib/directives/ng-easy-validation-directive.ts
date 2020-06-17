@@ -25,7 +25,8 @@ export class NgEasyValidationDirective implements OnInit, OnChanges  {
                     config.validator.id,
                     config.validator.validator,
                     config.message,
-                    config.tooltipsOnInit || false
+                    config.tooltipsOnInit || false,
+                    config.validator.alwaysEvaluate || false
                 ));
             }
             newRequirements[field] = configs;
@@ -39,7 +40,7 @@ export class NgEasyValidationDirective implements OnInit, OnChanges  {
 
     private invalidClass: string = "validation-error";
     private formId: string;
-    private validatorsAdded: boolean = false;
+    private validationEnabled: boolean = false;
     private validationSubscription: Subscription;
     private tippies: any = {};
 
@@ -61,9 +62,8 @@ export class NgEasyValidationDirective implements OnInit, OnChanges  {
         this.validationSubscription = this.host.form.valueChanges
         .pipe(
             debounceTime(this.validationDebounceTime),
-            tap(_ => {
-                this.validate.bind(this)();
-            })
+            filter(_ => this.validationEnabled),
+            tap(this.validate.bind(this))
         ).subscribe();
     }
 
@@ -77,7 +77,7 @@ export class NgEasyValidationDirective implements OnInit, OnChanges  {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if(Object.keys(this.requirements).length == 0) this.validatorsAdded = true;
+        if(Object.keys(this.requirements).length == 0) this.validationEnabled = true;
 
         if(changes.ngEasyValidation){
             setTimeout(() => {
@@ -91,7 +91,7 @@ export class NgEasyValidationDirective implements OnInit, OnChanges  {
     private initFieldConfigurations(){
         if(!this.requirements) return;
 
-        this.validatorsAdded = false;
+        this.validationEnabled = false;
 
         let inputFields: Element[] = this.getUsableInputFields(this.getFormElement());
         for (let element of inputFields) {
@@ -105,7 +105,7 @@ export class NgEasyValidationDirective implements OnInit, OnChanges  {
 
             control.updateValueAndValidity();
         }
-        this.validatorsAdded = true;
+        this.validationEnabled = true;
     }
     
     private setFieldIsDirty(requirements: ValidatorConfig[], control: AbstractControl): boolean{
@@ -134,16 +134,34 @@ export class NgEasyValidationDirective implements OnInit, OnChanges  {
     }
 
     private validate() {
-        if(!this.validatorsAdded) return;
         let formEl: Element = this.getFormElement();
         if(!formEl) return;
 
+        let inputFields: Element[] = this.getUsableInputFields(formEl);
+
+        this.validationEnabled = false;
+        this.reEvaluateFields(inputFields);
+        setTimeout(() => this.validationEnabled = true, this.validationDebounceTime);
+
         let validationResult: ValidationResult[] = this.validationService.validate(this.requirements, this.host.form);
-        let filteredInputFields: Element[] = this.getUsableInputFields(formEl);
-        this.updateFields(filteredInputFields, validationResult)
+        
+        this.updateFieldsLayout(inputFields, validationResult)
     }
 
-    private updateFields(inputFields: Element[], allErrors: ValidationResult[]){
+    private reEvaluateFields(inputFields: Element[]){
+        let evaluateForm: boolean = false;
+        for (let element of inputFields) {
+            let field: string = element.getAttribute("name");
+            let control: AbstractControl = this.host.form.controls[field];
+            if(this.requirements[field].some(x => x.alwaysEvaluate)){
+                control.updateValueAndValidity();
+                evaluateForm = true;
+            } 
+        }
+        if(evaluateForm) this.host.form.updateValueAndValidity();
+    }
+
+    private updateFieldsLayout(inputFields: Element[], allErrors: ValidationResult[]){
         for (let el of inputFields) {
             let field: string = el.getAttribute("name");
             let errors: ValidationResult[] = allErrors.filter(x => x.field == field);

@@ -74,15 +74,15 @@ A boolean that tells to library to show tooltips immediately after the form has 
 
 The ```ngEasyValidation``` directive supports modification through these options.
 
-* #### tippyProps
+#### tippyProps
 
-	An object with the default properties for the Tippy.js tooltips. [See all properties](https://atomiks.github.io/tippyjs/v6/all-props/).
+An object with the default properties for the Tippy.js tooltips. [See all properties](https://atomiks.github.io/tippyjs/v6/all-props/).
 
-* #### validationDebounceTime
+#### validationDebounceTime
 
-	A number reprenting the amount of milliseconds that will be applied to RxJS' ```debounceTime``` operator before applying the tooltips.
+A number reprenting the amount of milliseconds that will be applied to RxJS' ```debounceTime``` operator before applying the tooltips.
 
-	This can be used to increase the performance of heavy forms with many input fields.
+This can be used to increase the performance of heavy forms with many input fields.
 
 ## Validators
 #### Importing
@@ -97,23 +97,25 @@ import { required, maxLength, invalidValues } from 'ng-easy-validation';
 validator     | Invalid when|Notes
 ------------- |-------------|-------------
 `required()` | value is null or empty
- `requiredTrue()` | value is not ```true```|mostly used with checkboxes
- `nullValidator()` | never|performs no operation
- `minLength(minLength: number)` | value has less characters than ```minLength```
- `maxLength(maxLength: number)` | value has more characters than ```maxLength```
- `email()` | value is not a valid email address
- `min(min: number)` | value is less than `min`
- `max(max: number)` | value is more than `max`
- `between(min: number, max: number)` | value is less than `min` or more than `max`
- `invalidValues(invalidValues: any[] | any, valueModifier: (any) => any = x => x)` | value is in `invalidValues`|`valueModifier` can be used to modify what was entered before it will be matched. Ex: apply `toLowerCase()` before matching
- `requiredValues(requiredValues: any[] | any, valueModifier: (any) => any = x => x)` | value is not in `requiredValues`|`valueModifier` can be used to modify what was entered before it will be matched. Ex: apply `toLowerCase()` before matching
- `invalidCharacters(invalidCharacters: string)` | value contains any of the characters in `invalidCharacters`|`invalidCharacters` is a string containing all the characters
- `conditionalValidator(validator: ValidatorIdMap, condition: (AbstractControl) => boolean)` | `condition` is met and `validator` is invalid
- `sqlObjectName()` | value is not a valid SQL object name
- `isInteger()` | value is not an integer
- `isNumeric()` | value is not a numeric
- `isAlphaNumeric()` | value is not alphanumerical
- `isAlphabetical()` | value is not alphabetical
+`requiredTrue()` | value is not ```true```|mostly used with checkboxes
+`nullValidator()` | never|performs no operation
+`minLength(minLength: number)` | value has less characters than ```minLength```
+`maxLength(maxLength: number)` | value has more characters than ```maxLength```
+`email()` | value is not a valid email address
+`min(min: number)` | value is less than `min`
+`max(max: number)` | value is more than `max`
+`between(min: number, max: number)` | value is less than `min` or more than `max`
+`invalidValues(invalidValues: any[] \| any, valueModifier: (any) => any = x => x)` | value is in `invalidValues`|`valueModifier` can be used to modify what was entered before it will be matched. Ex: apply `toLowerCase()` before matching
+`requiredValues(requiredValues: any[] \| any, valueModifier: (any) => any = x => x)` | value is not in `requiredValues`|`valueModifier` can be used to modify what was entered before it will be matched. Ex: apply `toLowerCase()` before matching
+`invalidCharacters(invalidCharacters: string)` | value contains any of the characters in `invalidCharacters`|`invalidCharacters` is a string containing all the characters
+`conditionalValidator(validator: ValidatorIdMap, condition: (AbstractControl) => boolean)` | `condition` is met and `validator` is invalid
+`sqlObjectName()` | value is not a valid SQL object name
+`isInteger()` | value is not an integer
+`isNumeric()` | value is not a numeric
+`isAlphaNumeric()` | value is not alphanumerical
+`isAlphabetical()` | value is not alphabetical
+`startsWith(str: string)` | value doesn't start with `str`
+`endsWith()` | value doesn't end with `str`
 
  ## License
 
