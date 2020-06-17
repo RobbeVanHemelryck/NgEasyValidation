@@ -115,7 +115,7 @@ validator     | Invalid when|Notes
 `isAlphaNumeric()` | value is not alphanumerical
 `isAlphabetical()` | value is not alphabetical
 `startsWith(str: string)` | value doesn't start with `str`
-`endsWith()` | value doesn't end with `str`
+`endsWith(str: string)` | value doesn't end with `str`
 
  ## License
 

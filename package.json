@@ -1,6 +1,6 @@
 {
   "name": "ng-easy-validation",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "peerDependencies": {
     "@angular/animations": "~9.1.11",
     "@angular/common": "~9.1.11",

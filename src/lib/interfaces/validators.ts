@@ -8,7 +8,7 @@ export function required(): ValidatorInfo{
 }
 
 export function pattern(regex: string): ValidatorInfo {
-    return new ValidatorInfo(Validators.pattern(regex), ValidatorId.Required);
+    return new ValidatorInfo(Validators.pattern(regex), ValidatorId.Pattern);
 }
 
 export function requiredTrue(): ValidatorInfo {
@@ -16,27 +16,27 @@ export function requiredTrue(): ValidatorInfo {
 }
 
 export function nullValidator(): ValidatorInfo {
-    return new ValidatorInfo(Validators.required, ValidatorId.Required);
+    return new ValidatorInfo(Validators.required, ValidatorId.NullValidator);
 }
 
 export function minLength(minLength: number): ValidatorInfo {
-    return new ValidatorInfo(Validators.minLength(minLength), ValidatorId.Required);
+    return new ValidatorInfo(Validators.minLength(minLength), ValidatorId.MinLength);
 }
 
 export function maxLength(maxLength: number): ValidatorInfo {
-    return new ValidatorInfo(Validators.maxLength(maxLength), ValidatorId.Required);
+    return new ValidatorInfo(Validators.maxLength(maxLength), ValidatorId.MaxLength);
 }
 
 export function email(): ValidatorInfo {
-    return new ValidatorInfo(Validators.required, ValidatorId.Required);
+    return new ValidatorInfo(Validators.required, ValidatorId.Email);
 }
 
 export function min(min: number): ValidatorInfo {
-    return new ValidatorInfo(Validators.min(min), ValidatorId.Required);
+    return new ValidatorInfo(Validators.min(min), ValidatorId.Min);
 }
 
 export function max(max: number): ValidatorInfo {
-    return new ValidatorInfo(Validators.max(max), ValidatorId.Required);
+    return new ValidatorInfo(Validators.max(max), ValidatorId.Max);
 }
 
 
